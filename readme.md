@@ -53,3 +53,7 @@ RU:
 ```
 5. npm run dev
 6. enjoy documentation on [localhost](http://localhost:5000/)
+
+---
+
+ths [Classsed](https://www.patreon.com/classsed) for lessons and inspiration
