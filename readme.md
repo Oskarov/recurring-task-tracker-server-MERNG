@@ -56,4 +56,4 @@ RU:
 
 ---
 
-ths [Classsed](https://www.patreon.com/classsed) for lessons and inspiration
+thanks [Classsed](https://www.patreon.com/classsed) for lessons and inspiration
