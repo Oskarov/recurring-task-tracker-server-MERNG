@@ -9,6 +9,13 @@ module.exports = {
         async getPosts() {
             try {
                 const posts = await Post.find().sort({createdAt: -1});
+
+                for (const [key, value] of Object.entries(posts)) {
+                    if (value.isPrivate === true) {
+                        delete posts[key];
+                    }
+                }
+
                 return posts;
             } catch (err) {
                 throw new Error((err));
@@ -81,3 +88,4 @@ module.exports = {
         }
     }
 };
+
