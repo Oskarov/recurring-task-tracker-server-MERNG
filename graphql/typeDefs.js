@@ -39,8 +39,10 @@ module.exports = gql`
         createdAt: String
     }
     type Query{
+        getUser: User
         getPosts: [Post]
         getPost(postId: ID!): Post
+        getUserPosts(username: String!): [Post]
     }
     input RegisterInput{
         username: String!

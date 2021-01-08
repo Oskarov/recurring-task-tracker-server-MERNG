@@ -4,6 +4,7 @@ const jwt = require('jsonwebtoken');
 const {UserInputError} = require('apollo-server');
 const {SECRET_KEY} = require('../../config');
 const {validateRegisterInput, validateLoginInput} = require('../../util/validators')
+const checkAuth = require('../../util/checkAuth');
 
 function generateToken(res){
     return jwt.sign({
@@ -14,6 +15,19 @@ function generateToken(res){
 }
 
 module.exports = {
+    Query: {
+        async getUser(_, __, context) {
+            try {
+                const user = checkAuth(context);
+                return {
+                    ...user,
+                    token: context.req.headers.authorization
+                }
+            } catch (err) {
+                throw new Error((err));
+            }
+        },
+    },
     Mutation: {
         async register(parent, {registerInput: {username, email, password, confirmedPassword}}, context, info) {
            const {valid, errors} = validateRegisterInput(username, email, password, confirmedPassword);

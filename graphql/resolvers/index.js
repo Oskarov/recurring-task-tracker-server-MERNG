@@ -12,6 +12,7 @@ module.exports = {
       }
     },
     Query: {
+        ...usersResolvers.Query,
         ...postsResolvers.Query
     },
     Mutation: {

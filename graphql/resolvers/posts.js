@@ -8,15 +8,7 @@ module.exports = {
     Query: {
         async getPosts() {
             try {
-                const posts = await Post.find().sort({createdAt: -1});
-
-                for (const [key, value] of Object.entries(posts)) {
-                    if (value.isPrivate === true) {
-                        delete posts[key];
-                    }
-                }
-
-                return posts;
+                return await Post.find({"isPrivate":false}).sort({createdAt: -1});
             } catch (err) {
                 throw new Error((err));
             }
@@ -32,7 +24,20 @@ module.exports = {
             } catch (e) {
                 throw new Error(err);
             }
-        }
+        },
+        async getUserPosts(_, {username}, context) {
+            const user = checkAuth(context);
+
+            if (user.username !== username){
+                throw new AuthenticationError('Action is not allowed')
+            }
+
+            try {
+                return await Post.find({"username":username}).sort({createdAt: -1});
+            } catch (err) {
+                throw new Error((err));
+            }
+        },
     },
     Mutation: {
         async createPost(_, {postInput: { body, isPrivate, importance, color, flag, repetitionType, repetitionRange}}, context) {
