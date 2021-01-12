@@ -19,9 +19,10 @@ module.exports = {
         async getUser(_, __, context) {
             try {
                 const user = checkAuth(context);
+                const token = context.req.headers.authorization.split('Bearer ')[1];
                 return {
                     ...user,
-                    token: context.req.headers.authorization
+                    token
                 }
             } catch (err) {
                 throw new Error((err));
