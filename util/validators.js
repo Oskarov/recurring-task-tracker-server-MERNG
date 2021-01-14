@@ -48,7 +48,7 @@ module.exports.validatePostInput = (body, isPrivate, importance, color, flag, re
     const errors = {};
 
     if (body.trim() === '') {
-        errors.username = 'Post can\'t be empty';
+        errors.body = 'Post can\'t be empty';
     }
     if (!inImportance(importance)){
         errors.importance = 'not require type of importance';
@@ -57,7 +57,7 @@ module.exports.validatePostInput = (body, isPrivate, importance, color, flag, re
         errors.color = 'not a hex color';
     }
     if (!inRepetition(repetitionType)){
-        errors.importance = 'not require type of repetition';
+        errors.repetitionType = 'not require type of repetition';
     }
 
     return{
