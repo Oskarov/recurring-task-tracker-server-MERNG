@@ -13,9 +13,17 @@ module.exports = {
                 throw new Error((err));
             }
         },
-        async getPost(_, {postId}) {
+        async getPost(_, {postId}, context) {
             try {
                 const post = await Post.findById(postId);
+
+                if (post.isPrivate == true){
+                    const user = checkAuth(context);
+                    if (user.username !== post.username){
+                        throw new AuthenticationError('Action is not allowed')
+                    }
+                }
+
                 if (post) {
                     return post;
                 } else {
