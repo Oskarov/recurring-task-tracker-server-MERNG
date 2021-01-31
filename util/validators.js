@@ -92,11 +92,11 @@ function isHexColor(color){
     return false;
 }
 
-module.exports.isBasicString = (str) => {
+module.exports.isBasicString = ( {name, value} ) => {
     const errors = {};
 
-    if (str.trim() === '') {
-        errors.username = 'value can\'t be empty';
+    if (value.trim() === '') {
+        errors[name] = 'value can\'t be empty';
     }
 
     return{

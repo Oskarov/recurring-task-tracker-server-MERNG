@@ -8,8 +8,8 @@ module.exports = {
         async createComment(_, {postId, body}, context) {
             const { username } = checkAuth(context);
 
-            const {valid, errors} = isBasicString(body);
-
+            const {valid, errors} = isBasicString({name: 'body', value: body} );
+            
             if (!valid) {
                 throw new UserInputError('Errors', {errors});
             }
