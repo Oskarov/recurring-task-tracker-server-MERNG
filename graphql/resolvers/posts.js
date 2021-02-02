@@ -79,6 +79,57 @@ module.exports = {
 
             return post;
         },
+        async editPost(_, {postId, postInput: { body, isPrivate, importance, color, flag, repetitionType, repetitionRange}}, context) {
+            const user = checkAuth(context);
+
+            try {
+                const post = await Post.findById(postId);
+                if (user.username === post.username) {
+
+                    const {valid, errors} = validatePostInput(body, isPrivate, importance, color, flag, repetitionType, repetitionRange);
+                    if (!valid) {
+                        throw new UserInputError('Errors', {errors});
+                    }
+
+                    const postNewField = {body, isPrivate, importance, color, flag, repetitionType, repetitionRange}
+                    for (let i in postNewField){
+                        post[i] = postNewField[i];
+                    }
+
+                    await post.save();
+                    return post;
+                } else {
+                    throw new AuthenticationError('Action is not allowed')
+                }
+            } catch (e) {
+                throw new Error(e);
+            }
+
+
+
+            const createdDate = new Date().toISOString();
+            const newPost = new Post({
+                body,
+                isPrivate,
+                importance,
+                color,
+                flag,
+                repetitionType,
+                repetitionRange,
+                createdAt: createdDate,
+                updatedAt: createdDate,
+                user: user.id,
+                username: user.username,
+            })
+
+            const post = await newPost.save();
+
+            context.pubsub.publish('NEW_POST', {
+                newPost: post
+            });
+
+            return post;
+        },
         async deletePost(_, {postId}, context) {
             const user = checkAuth(context);
 
