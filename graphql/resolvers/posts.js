@@ -81,15 +81,17 @@ module.exports = {
         },
         async editPost(_, {postId, postInput: { body, isPrivate, importance, color, flag, repetitionType, repetitionRange}}, context) {
             const user = checkAuth(context);
-
             try {
                 const post = await Post.findById(postId);
+                console.log(post);
+
                 if (user.username === post.username) {
 
                     const {valid, errors} = validatePostInput(body, isPrivate, importance, color, flag, repetitionType, repetitionRange);
                     if (!valid) {
                         throw new UserInputError('Errors', {errors});
                     }
+
 
                     const postNewField = {body, isPrivate, importance, color, flag, repetitionType, repetitionRange}
                     for (let i in postNewField){
